@@ -17,7 +17,7 @@ from pandas.api.types import CategoricalDtype
 ######### Adult (Protected = 9) ##############################
 #.01 .02 .03 .05 .1 .2 .3, .5
 l_val=.1
-l_val2=.1
+l_val2=.5
 df = pd.read_csv('adult_final.csv', header= None)
 
 mapping = {'<=50k': 0, '>50k': 1}
@@ -245,35 +245,35 @@ mask1=tf.math.equal(t1, one)
 tt1=tf.where(mask1,one,zeroes)
 c2_1 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt1))/ (tf.reduce_sum(tt1))
 c2_n1 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt1))/(tf.reduce_sum(1-tt1))
-const1 = c2_1 - c2_n1
+const1 = tf.abs(c2_1 - c2_n1)
 
 t2 = (input_data[:,:,prot2] +1)/2
 mask2=tf.math.equal(t2, one)
 tt2=tf.where(mask2,one,zeroes)
 c2_2 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt2))/ (tf.reduce_sum(tt2))
 c2_n2 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt2))/(tf.reduce_sum(1-tt2))
-const2 = c2_2 - c2_n2
+const2 = tf.abs(c2_2 - c2_n2)
 
 t3 = (input_data[:,:,prot2] +1)/3
 mask3=tf.math.equal(t3, one)
 tt3=tf.where(mask3,one,zeroes)
 c2_3 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt3))/ (tf.reduce_sum(tt3))
 c2_n3 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt3))/(tf.reduce_sum(1-tt3))
-const3 = c2_3 - c2_n3
+const3 = tf.abs(c2_3 - c2_n3)
 
 t4 = (input_data[:,:,prot2] +1)/4
 mask4=tf.math.equal(t4, one)
 tt4=tf.where(mask4,one,zeroes)
 c2_4 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt4))/ (tf.reduce_sum(tt4))
 c2_n4 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt4))/(tf.reduce_sum(1-tt4))
-const4 = c2_4 - c2_n4
+const4 = tf.abs(c2_4 - c2_n4)
 
 t5 = (input_data[:,:,prot2] +1)/5
 mask5=tf.math.equal(t5, one)
 tt5=tf.where(mask5,one,zeroes)
 c2_5 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt5))/ (tf.reduce_sum(tt5))
 c2_n5 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt5))/(tf.reduce_sum(1-tt5))
-const5 = c2_5 - c2_n5
+const5 = tf.abs(c2_5 - c2_n5)
 
 
 const11=const1+const2+const3+const4+const5
@@ -281,7 +281,7 @@ const11=const1+const2+const3+const4+const5
 
 
 
-loss_2 =  tf.compat.v1.maximum(const00 - l_val, 0.0) +  tf.compat.v1.maximum(-const00 - l_val, 0.0) +  tf.compat.v1.maximum(const11 - l_val2, 0.0) +  tf.compat.v1.maximum(-const11 - l_val2, 0.0)
+loss_2 =  tf.compat.v1.maximum(const00 - l_val, 0.0) +  tf.compat.v1.maximum(-const00 - l_val, 0.0) +  tf.compat.v1.maximum(const11 - l_val2, 0.0) + 
 
 ########### (Uncomment the following for traning with) Equalized Odds ####################################
 
@@ -321,6 +321,7 @@ for cv in range(1):
         q=np.append(np.arange(31654,45221,1),np.arange(31654,32087,1),axis=0)
         train_data=data[p,:]
         test_data=data[q,:]
+        
         print(len(train_data),len(test_data))
         ################ TRAIN ################################
         tf.compat.v1.global_variables_initializer().run(session=sess)
@@ -384,7 +385,7 @@ for cv in range(1):
                 
                 
 
-
+        
         labels_predicted = np.array(labels_predicted)
         # DP ###
         #t1 = np.sum(labels_predicted * test_data[:,prot])/ len(test_data) 
@@ -445,15 +446,19 @@ for cv in range(1):
                             
         print("TP,FP,TN,FN")
         print(TP_af,FP_af,TN_af,FN_af)
-        precision=float(TP_af/(TP_af+FP_af))
+        if TP_af+FP_af !=0:
+                precision=float(TP_af/(TP_af+FP_af))
         recall=float(TP_af/(TP_af+FN_af))
         accr1=float((TP_af+FP_af)/(count1))
         print("for g1 precision", precision)
         print("for g1 recall", recall)
         print("for g1 accept rate", accr1)
 
+        print("TP,FP,TN,FN")
         print(TP,FP,TN,FN)
-        precision=float(TP/(TP+FP))
+        if TP+FP !=0:
+                precision=float(TP/(TP+FP))
+        
         recall=float(TP/(TP+FN))
         accr2=float((TP+FP)/(count2))
         print("for g2 precision", precision)
