@@ -397,8 +397,8 @@ for cv in range(1):
        
         t = np.sum(labels_predicted)/ np.float(len(test_data))
         
-        t1 = np.sum(labels_predicted * test_data[:,prot])/ np.sum(test_data[:, prot]) 
-        t0 = np.sum(labels_predicted * (1 - test_data[:,prot]))/ np.sum(1 - test_data[:,prot])
+        t1 = np.sum(labels_predicted * test_data[:,prot1])/ np.sum(test_data[:, prot1]) 
+        t0 = np.sum(labels_predicted * (1 - test_data[:,prot1]))/ np.sum(1 - test_data[:,prot1])
         
         TP=0
         TN=0
