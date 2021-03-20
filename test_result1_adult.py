@@ -281,7 +281,7 @@ const11=const1+const2+const3+const4+const5
 
 
 
-loss_2 =  tf.compat.v1.maximum(const00 - l_val, 0.0) +  tf.compat.v1.maximum(-const00 - l_val, 0.0) +  tf.compat.v1.maximum(const11 - l_val2, 0.0) + 
+loss_2 =  tf.compat.v1.maximum(const00 - l_val, 0.0) +  tf.compat.v1.maximum(-const00 - l_val, 0.0) +  tf.compat.v1.maximum(const11 - l_val2, 0.0) 
 
 ########### (Uncomment the following for traning with) Equalized Odds ####################################
 
