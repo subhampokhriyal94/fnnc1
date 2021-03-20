@@ -262,7 +262,7 @@ c2_n3 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt3))/(tf.reduce_
 const3 = c2_3 - c2_n3
 
 t4 = (input_data[:,:,prot2] +1)/4
-mask1=tf.math.equal(t4, one)
+mask4=tf.math.equal(t4, one)
 tt4=tf.where(mask4,one,zeroes)
 c2_4 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt4))/ (tf.reduce_sum(tt4))
 c2_n4 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt4))/(tf.reduce_sum(1-tt4))
@@ -272,7 +272,7 @@ t5 = (input_data[:,:,prot2] +1)/5
 mask5=tf.math.equal(t5, one)
 tt5=tf.where(mask5,one,zeroes)
 c2_5 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], tt5))/ (tf.reduce_sum(tt5))
-c2_n5 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt5))/(tf.reduce_sum(1-tt5)
+c2_n5 =  tf.compat.v1.reduce_sum(tf.multiply(rounded[:,:,1], 1-tt5))/(tf.reduce_sum(1-tt5))
 const5 = c2_5 - c2_n5
 
 
